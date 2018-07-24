@@ -1,20 +1,41 @@
 <h1>hello world</h1>
 
   <fb:login-button 
-    scope="public_profile,email"
+    scope="public_profile,email,user_events"
     onlogin="checkLoginState();">
     Login
   </fb:login-button>
 
+  <div id="status"></div>
+
+
 
 <script>
+
+// function to fetch info FB.api('/me/', function(response){console.log(JSON.stringify(response))})
+
+
+  function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    var form = document.createElement('form')
+    form.action = '/info'
+    form.method = 'post'
+    var input = document.createElement('input')
+    input.name = 'access_token'
+    input.value = response.authResponse.accessToken
+    form.appendChild(input)
+    document.body.appendChild(form)
+    form.submit()
+  });
+}
+
 
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '458062597998756',
       cookie     : true,
       xfbml      : true,
-      version    : 'v3.0'
+      version    : 'v3.0' 
     });
       
     FB.AppEvents.logPageView();   
@@ -28,13 +49,4 @@
      js.src = "https://connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
-
-  function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-    console.log(checkLoginState())
-  });
-}
-
-
 </script>
