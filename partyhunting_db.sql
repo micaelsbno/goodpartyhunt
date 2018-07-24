@@ -4,7 +4,8 @@ CREATE TABLE users (
   id SERIAL4 PRIMARY KEY,
   name VARCHAR(100),
   email VARCHAR(100),
-  profile_pic VARCHAR(400)
+  profile_pic VARCHAR(400),
+  fb_id BIGINT
 );
 
 CREATE TABLE user_events (
@@ -24,6 +25,7 @@ CREATE TABLE places (
   zip INTEGER,
   latitude NUMERIC(10,7),
   longitude NUMERIC(10,7),
+  fb_id BIGINT,
   logo VARCHAR(400)
 );
 
@@ -32,7 +34,8 @@ CREATE TABLE events (
   name VARCHAR(100),
   image_url VARCHAR(400),
   place_id INTEGER,
-  description VARCHAR(1200)
+  fb_id BIGINT,
+  description VARCHAR(5000)
 );
 
 CREATE TABLE event_times (
@@ -54,3 +57,15 @@ CREATE TABLE event_categories (
   category_id INTEGER
 );
 
+CREATE TABLE event_categories (
+  id SERIAL4 PRIMARY KEY,
+  event_id INTEGER,
+  user_id INTEGER,
+  category_id INTEGER
+);
+
+CREATE TABLE users_friends (
+  id SERIAL4 PRIMARY KEY,
+  user_id INTEGER,
+  friend_id INTEGER
+);

@@ -1,7 +1,7 @@
 <h1>hello world</h1>
 
   <fb:login-button 
-    scope="public_profile,email,user_events"
+    scope="public_profile,email,user_events,user_friends"
     onlogin="checkLoginState();">
     Login
   </fb:login-button>
@@ -26,6 +26,7 @@
     form.appendChild(input)
     document.body.appendChild(form)
     form.submit()
+    console.log(response)
   });
 }
 
