@@ -10,6 +10,5 @@ require_relative 'models/place'
 require_relative 'models/user_event'
 require_relative 'models/event'
 require_relative 'models/event_time'
-require_relative 'models/user_event'
 
 binding.pry

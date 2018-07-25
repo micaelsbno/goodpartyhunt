@@ -11,11 +11,55 @@ require_relative 'models/place'
 require_relative 'models/user_event'
 require_relative 'models/event'
 require_relative 'models/event_time'
-require_relative 'models/userevent'
 enable :sessions
 
-get '/' do
+helpers do
+
+  def current_user
+    User.find_by(id: session[:user_id])
+  end
+
+  def logged_in?
+    !!current_user
+  end
+
+end
+
+
+get '/:radius' do
+  redirect '/login' unless logged_in?
+  @distance = (params[:radius].to_f / 100000)
+  Event.all.each { |event|
+    place = event.place
+    if !!place.latitude
+        if (event.place.latitude.to_f - current_user.latitude.to_f)**2 + (event.place.longitude.to_f - current_user.longitude.to_f)**2 < @distance**2    
+          puts event.place
+        end
+    end
+  }
+      
+
   erb :index
+end
+
+get '/' do
+  redirect '/login' unless logged_in?
+  @distance = (@radius.to_f / 100000)
+  Event.all.each { |event|
+    place = event.place
+    if !!place.latitude
+        if (event.place.latitude.to_f - current_user.latitude.to_f)**2 + (event.place.longitude.to_f - current_user.longitude.to_f)**2 < @distance**2    
+          puts event
+        end
+    end
+    }
+      
+
+  erb :index
+end
+
+get '/login' do
+  erb :login
 end
 
 post '/info' do
@@ -29,56 +73,61 @@ post '/info' do
     user.save
   end
 
-  info['events']['data'].each {|event|
+  info['events']['data'].each { |event|
     if !!event['place'] && !!event['place']['name'] && Place.find_by(name: event['place']['name']) == nil && Place.find_by(fb_id: event['place']['id'].to_i) == nil
       new_place = Place.new
-      if !!event['place']['name']
-        new_place.name = event['place']['name']
-      end
-      if !!event['place']['location']
-        if !!event['place']['location']['city']
-          new_place.city = event['place']['location']['city']
+      event['place'].each{ |key, value|
+        case key
+        when 'name'
+          new_place.name = value
+        when 'id'
+          new_place.fb_id = value.to_i
+        when 'location'
+          value.each { |key,value|
+            case key
+            when 'city'
+              new_place.city = value
+            when 'country'
+              new_place.country = value
+            when 'latitude'
+              new_place.latitude = value
+            when 'longitude'
+              new_place.longitude = value
+            when 'state'
+              new_place.state = value
+            when 'street'
+              new_place.street = value
+            when 'zip'
+              new_place.zip = value.to_i
+            else
+              'not found' 
+            end
+          }
         end
-        if !!event['place']['location']['state']
-          new_place.state = event['place']['location']['state']
-        end
-        if !!event['place']['location']['street']
-          new_place.street = event['place']['location']['street']
-        end
-        if !!event['place']['location']['country']
-          new_place.country = event['place']['location']['country']
-        end
-        if !!event['place']['location']['zip'].to_i
-          new_place.zip = event['place']['location']['zip'].to_i
-        end
-        if !!event['place']['location']['latitude']
-          new_place.latitude = event['place']['location']['latitude']
-        end
-        if !!event['place']['location']['longitude']
-          new_place.longitude = event['place']['location']['longitude']
-        end
-      end
-      if !!event['place']['id']
-        new_place.fb_id = event['place']['id'].to_i
-      end
-
-      new_place.save
-      # to be implemented with facebook review
-      # new_place.logo = HTTParty.get("https://graph.facebook.com/#{event['place']['id']}?fields=cover&access_token=#{params[:access_token]}")
+        new_place.save
+      }
     end
-
+  
     if Event.find_by(fb_id: event['id']) == nil
       new_event = Event.new
-      new_event.name = event['name']
-
       new_event.image_url = HTTParty.get("https://graph.facebook.com/#{event['id']}?fields=cover&access_token=#{params[:access_token]}")['cover']['source']
-      if !!event['place'] && Place.find_by(fb_id: event['place']['id']) != nil
-        new_event.place_id = Place.find_by(fb_id: event['place']['id']).id.to_i
-      end
-      new_event.fb_id = event['id']
-      new_event.description = event['description']
+      
+      event.each { |key, value|
+        case key
+        when 'name'
+          new_event.name = value
+        when 'place'
+          new_event.place_id = Place.find_by(fb_id: value['id']).id.to_i
+        when 'id'
+          new_event.fb_id = value.to_i
+        when 'description'
+          new_event.description = value
+        else
+          'not found'
+        end
+      }
       new_event.save
-
+       
       if event['event_times'] != nil
         event['event_times'].each { |time|
           new_event_time = Event_time.new
@@ -95,26 +144,28 @@ post '/info' do
         new_event_time.save
       end
 
-    user_rsvp = User_event.new
-    user_rsvp.user_id = User.find_by(fb_id: info['id'].to_i).id
-    user_rsvp.event_id = Event.find_by(fb_id: event['id'])['id'].to_i
-    user_rsvp.rsvp = event['rsvp_status']
-    user_rsvp.save
+      user_rsvp = User_event.new
+      user_rsvp.user_id = User.find_by(fb_id: info['id'].to_i).id
+      user_rsvp.event_id = Event.find_by(fb_id: event['id'])['id'].to_i
+      user_rsvp.rsvp = event['rsvp_status']
+      user_rsvp.save
       
     end
 
-
   }
+  session[:user_id] = User.find_by(fb_id: info['id']).id
+  redirect '/'
+end
 
-
-  
-  # image fetch
-  # HTTParty.get("https://graph.facebook.com/1734531426666686?fields=cover&access_token=#{params[:access_token]}")
-  # "https://graph.facebook.com/#{event_id}?fields=cover&access_token=#{params[:access_token]}"
-  redirect '/success'
+put '/search' do
+  user = current_user
+  user.latitude = params[:latitude].to_f
+  user.longitude = params[:longitude].to_f
+  user.save
+  redirect "/#{params[:radius]}"
 end
 
 get '/success' do
-  return 'yaay'
+  erb :index
 end
 

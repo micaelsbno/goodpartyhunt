@@ -1,3 +1,3 @@
-class Event_time < ActiveRecord::Base
+class EventTime < ActiveRecord::Base
   belongs_to :event  
 end

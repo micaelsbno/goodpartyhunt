@@ -5,6 +5,8 @@ CREATE TABLE users (
   name VARCHAR(100),
   email VARCHAR(100),
   profile_pic VARCHAR(400),
+  latitude NUMERIC(10,7),
+  longitude NUMERIC(10,7),
   fb_id BIGINT
 );
 

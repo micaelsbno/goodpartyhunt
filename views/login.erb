@@ -1,0 +1,50 @@
+  <fb:login-button 
+    scope="public_profile,email,user_events,user_friends"
+    onlogin="checkLoginState();">
+    Login
+  </fb:login-button>
+
+  <div id="status"></div>
+
+
+
+<script>
+
+// function to fetch info FB.api('/me/', function(response){console.log(JSON.stringify(response))})
+
+
+  function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    var form = document.createElement('form')
+    form.action = '/info'
+    form.method = 'post'
+    var input = document.createElement('input')
+    input.name = 'access_token'
+    input.value = response.authResponse.accessToken
+    form.appendChild(input)
+    document.body.appendChild(form)
+    form.submit()
+  });
+}
+
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '458062597998756',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v3.0' 
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>

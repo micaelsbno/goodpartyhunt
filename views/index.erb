@@ -1,53 +1,37 @@
 <h1>hello world</h1>
 
-  <fb:login-button 
-    scope="public_profile,email,user_events,user_friends"
-    onlogin="checkLoginState();">
-    Login
-  </fb:login-button>
 
-  <div id="status"></div>
-
-
+  <form id="search-form">
+    Find events within
+    <input type="number" min='100' max='20000' name="radius" id='radius'> meters.
+    <button id="search-location">Find!</button>
+  </form>
 
 <script>
+  
+  button = document.getElementById('search-location')
 
-// function to fetch info FB.api('/me/', function(response){console.log(JSON.stringify(response))})
+  function findLocation(event){
+    event.preventDefault();
+    navigator.geolocation.getCurrentPosition(function(position){ 
+      var form = document.getElementById('search-form')
+      form.action = '/search'
+      form.method = 'post'
+      var method = document.createElement('input')
+      method.name = '_method'
+      method.value = 'put'
+      var latitude = document.createElement('input')
+      latitude.name = 'latitude'
+      latitude.value = position.coords.latitude
+      var longitude = document.createElement('input')
+      longitude.name = 'longitude'
+      longitude.value = position.coords.longitude
+      form.appendChild(method)
+      form.appendChild(latitude)
+      form.appendChild(longitude)
+      form.submit()
+    })
+  }
+    button.addEventListener('click', findLocation)
 
-
-  function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    var form = document.createElement('form')
-    form.action = '/info'
-    form.method = 'post'
-    var input = document.createElement('input')
-    input.name = 'access_token'
-    input.value = response.authResponse.accessToken
-    form.appendChild(input)
-    document.body.appendChild(form)
-    form.submit()
-    console.log(response)
-  });
-}
-
-
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '458062597998756',
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v3.0' 
-    });
-      
-    FB.AppEvents.logPageView();   
-      
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
 </script>
