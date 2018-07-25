@@ -29,37 +29,24 @@ end
 get '/:radius' do
   redirect '/login' unless logged_in?
   @distance = (params[:radius].to_f / 100000)
-  Event.all.each { |event|
+  @events_found = Event.all.map { |event|
     place = event.place
     if !!place.latitude
-        if (event.place.latitude.to_f - current_user.latitude.to_f)**2 + (event.place.longitude.to_f - current_user.longitude.to_f)**2 < @distance**2    
-          puts event.place
+        if (event.place.latitude.to_f - current_user.latitude.to_f)**2 + (event.place.longitude.to_f - current_user.longitude.to_f)**2 < @distance**2   
+          puts event.name
         end
     end
   }
-      
 
-  erb :index
+  erb :results
 end
 
 get '/' do
-  redirect '/login' unless logged_in?
-  @distance = (@radius.to_f / 100000)
-  Event.all.each { |event|
-    place = event.place
-    if !!place.latitude
-        if (event.place.latitude.to_f - current_user.latitude.to_f)**2 + (event.place.longitude.to_f - current_user.longitude.to_f)**2 < @distance**2    
-          puts event
-        end
-    end
-    }
-      
-
-  erb :index
-end
-
-get '/login' do
-  erb :login
+  if logged_in?
+    erb :index
+  else
+    erb :login
+  end
 end
 
 post '/info' do
@@ -165,7 +152,4 @@ put '/search' do
   redirect "/#{params[:radius]}"
 end
 
-get '/success' do
-  erb :index
-end
 
