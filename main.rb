@@ -36,11 +36,6 @@ get '/search' do
   erb :search
 end
 
-post '/search' do
-  Database.add_user_rsvp(current_user, Event.find(params[:event_id], "attending"))
-  redirect '/search'
-end
-
 get '/' do
   if logged_in?
     @user_latitude = current_user.latitude.to_f
@@ -92,6 +87,10 @@ get '/login' do
   erb :login
 end
 
+post '/event/:event_id' do
+  Database.add_user_rsvp(current_user.fb_id, Event.find(params[:event_id]), "attending")
+  redirect '/search'
+end
 
 put '/start' do
   user = current_user

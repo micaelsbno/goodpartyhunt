@@ -13,11 +13,11 @@
       </div>
     </header>  
 
-<form id="search-form-start">
-  Search radius: 
-  <input type="number" min='100' max='20000' name="radius" id='radius' placeholder="meters">
-  <button id="search-start"><i class="fas fa-search"></i></button>
-</form>
+  <form id="search-form">
+    Search radius:
+    <input type="number" min='100' max='20000' name="radius" id='radius'>
+    <button id="search-location"><i class="fas fa-search"></i></button>
+  </form>
 
 <%
 
@@ -56,31 +56,4 @@
  <% end %>
   
 
-
-<script>
-function findLocation(event){
-  event.preventDefault();
-    navigator.geolocation.getCurrentPosition(function(position){ 
-      var form = document.getElementById('search-form-start')
-      form.action = '/start'
-      form.method = 'post'
-      var method = document.createElement('input')
-      method.name = '_method'
-      method.value = 'put'
-      var latitude = document.createElement('input')
-      latitude.name = 'latitude'
-      latitude.value = position.coords.latitude
-      var longitude = document.createElement('input')
-      longitude.name = 'longitude'
-      longitude.value = position.coords.longitude
-      form.appendChild(method)
-      form.appendChild(latitude)
-      form.appendChild(longitude)
-      form.submit()
-    })
-  }
-    button = document.getElementById('search-start')
-    button.addEventListener('click', findLocation)
-
-</script>
 

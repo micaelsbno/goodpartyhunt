@@ -132,7 +132,7 @@ li {
   list-style-type: none;
 }
 
-#search-form-start {
+#search-form-start, #search-form {
   display: flex;
   align-self: center;
   justify-content: center;
@@ -164,7 +164,7 @@ input,textarea {
   font-size: 12px;
 }
 
-#search-start {
+#search-start, #search-location {
   background: none;
   border: none;
   color: $primary-color;
@@ -182,6 +182,11 @@ input::-webkit-inner-spin-button {
 }
 
 .fas {
+  color: $primary-color;
+}
+
+.add-event {
+  margin: 15px 0;
   color: $primary-color;
 }
 

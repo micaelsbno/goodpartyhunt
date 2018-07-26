@@ -62,11 +62,11 @@ div .main {
   padding: 0 10px;
   color: #FF00F8;
   font-size: 12px;
+  justify-content: space-between;
 }
 
 .events__place__item {
   color: #FF00F8;
-  width: 100%;
 }
 
 .menu {
@@ -120,7 +120,7 @@ li {
   list-style-type: none;
 }
 
-#search-form-start {
+#search-form-start, #search-form {
   display: flex;
   align-self: center;
   justify-content: center;
@@ -152,7 +152,7 @@ input, textarea {
   font-size: 12px;
 }
 
-#search-start {
+#search-start, #search-location {
   background: none;
   border: none;
   color: #00FFE0;
