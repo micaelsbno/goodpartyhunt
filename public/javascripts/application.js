@@ -19,5 +19,3 @@ function findLocation(event){
     form.submit()
   })
 }
-  button = document.getElementById('search-location')
-  button.addEventListener('click', findLocation)
