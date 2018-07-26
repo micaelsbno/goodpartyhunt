@@ -32,19 +32,17 @@ get '/search' do
   @events = Event.all
   @user_latitude = current_user.latitude.to_f
   @user_longitude = current_user.longitude.to_f
-  @radius = (current_user.radius.to_f / 100000) / 1.2
+  @radius = (current_user.radius.to_f / 100000)
   erb :search
 end
 
 post '/search' do
-  binding.pry
   Database.add_user_rsvp(current_user, Event.find(params[:event_id], "attending"))
   redirect '/search'
 end
 
 get '/' do
   if logged_in?
-
     @user_latitude = current_user.latitude.to_f
     @user_longitude = current_user.longitude.to_f
     @events = current_user.events

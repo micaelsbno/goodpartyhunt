@@ -32,7 +32,8 @@
     <% end %>
     <div class="events__place">
       <p class="events__place__item"><%= event.place.name %></p> <p class="events__place__item"><%= 
-      distance = (Math.sqrt((event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)) * 10000) ** 1.11333
+        dist = (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)
+      distance = (Math.sqrt(dist.abs) / 10000) ** 2
       if distance < 1000
         distance.to_i
       else

@@ -1,15 +1,24 @@
 <% if @user_latitude == nil %>
 
 <% end %>
-<nav class="header">
-  <div class="logo--small">
-  <img src="/img/gph_logo.png" alt="">
-  </div>
-  <div class="nav__title"><h2>My Events</h2></div>
-  <div class="nav__menu"><i class="fas fa-bars"></i></div>
-</nav>
+    <header>
+      <div class="logo--small">
+        <img src="img/gph_logo.png" alt="" class="logo--small">
+      </div>
+      <div class="title">
+        <h2>My Events</h2>
+      </div>
+      <div class="menu">
+        <i class="fas fa-bars"></i>
+      </div>
+    </header>  
 
-  
+<form id="search-form-start">
+  Search radius: 
+  <input type="number" min='100' max='20000' name="radius" id='radius' placeholder="meters">
+  <button id="search-start"><i class="fas fa-search"></i></button>
+</form>
+
 <%
 
   @events = @events.map { |event|
@@ -24,14 +33,17 @@
 %>
 
   <div class="events__item">
-    <div class="events__image" style="background: url('<%= event.image_url %>'); height: 200px; width: 400px;"></div>
-    <h3 class="events__title"><%= event.name %></h3>
+    <div class="events__image" style="background-image: url('<%= event.image_url %>')">
+      <div class="events__image-container"><h3 class="events__title"><%= event.name %></h3></div>
+    </div>
     <% if !!event.description %>
       <p class="events__description"><%= event.description[0..200] %>...</p>
     <% end %>
     <div class="events__place">
-      <p class="events__place__item"><%= event.place.name %></p> <p class="events__place__item"><%= 
-      distance = (Math.sqrt((event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)) * 10000) ** 1.49
+      <p class="events__place__item"><%= event.place.name %></p> <p class="events__place__item">
+        <%= 
+        dist = (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)
+      distance = (Math.sqrt(dist.abs) / 10000) ** 2
       if distance < 1000
         distance.to_i
       else
@@ -43,11 +55,7 @@
   
  <% end %>
   
-<form id="search-form-start">
-    Find events withing
-    <input type="number" min='100' max='20000' name="radius" id='radius'> meters.
-    <button id="search-start">Start finding!</button>
-</form>
+
 
 <script>
 function findLocation(event){

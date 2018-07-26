@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
   <script type="text/javascript" src="//connect.facebook.net/en_US/sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
   <title>Good Party Hunting</title>
@@ -13,14 +13,16 @@
     <nav class="hidden">
       <ul>
         <li id="logo--small">logo</li>
-        <a href"/search"><li>Search</li></a>
+        <a href"/"><li>My Events</li></a>
         <form action="/session" method="post">
         <input type="hidden" name="_method" value="delete">
         <button><li>logout</li></button>
         <li id="close">Close</li>
       </ul>
       </form>
-    </nav>  
+    </nav>
+
+
 
   <%= yield %>
 
