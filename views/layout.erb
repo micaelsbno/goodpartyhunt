@@ -8,8 +8,15 @@
   <link rel='stylesheet' href='/stylesheets/main.css'>
 </head>
 <body>
+  <% if logged_in? %>
+    <form action="/session" method="post">
+      <input type="hidden" name="_method" value="delete">
+      <button>logout</button>
+    </form>
+  <% end %>
 
   <%= yield %>
 
+<script src="/javascripts/application.js"></script>
 </body>
 </html>

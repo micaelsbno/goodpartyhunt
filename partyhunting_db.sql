@@ -7,6 +7,7 @@ CREATE TABLE users (
   profile_pic VARCHAR(400),
   latitude NUMERIC(10,7),
   longitude NUMERIC(10,7),
+  radius INTEGER,
   fb_id BIGINT
 );
 
@@ -70,4 +71,9 @@ CREATE TABLE users_friends (
   id SERIAL4 PRIMARY KEY,
   user_id INTEGER,
   friend_id INTEGER
+);
+
+CREATE TABLE users_sessions (
+  id SERIAL4 PRIMARY KEY,
+  user_id INTEGER
 );

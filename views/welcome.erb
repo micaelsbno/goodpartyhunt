@@ -1,0 +1,35 @@
+
+<h1>Welcome to the app</h1>
+<form id="search-form-start">
+
+    Find events withing
+    <input type="number" min='100' max='20000' name="radius" id='radius'> meters.
+    <button id="search-start">Start finding!</button>
+</form>
+
+<script>
+function findLocation(event){
+  event.preventDefault();
+    navigator.geolocation.getCurrentPosition(function(position){ 
+      var form = document.getElementById('search-form-start')
+      form.action = '/start'
+      form.method = 'post'
+      var method = document.createElement('input')
+      method.name = '_method'
+      method.value = 'put'
+      var latitude = document.createElement('input')
+      latitude.name = 'latitude'
+      latitude.value = position.coords.latitude
+      var longitude = document.createElement('input')
+      longitude.name = 'longitude'
+      longitude.value = position.coords.longitude
+      form.appendChild(method)
+      form.appendChild(latitude)
+      form.appendChild(longitude)
+      form.submit()
+    })
+  }
+    button = document.getElementById('search-start')
+    button.addEventListener('click', findLocation)
+
+</script>

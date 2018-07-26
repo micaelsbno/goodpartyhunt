@@ -1,17 +1,13 @@
+<div id="login-button">
   <fb:login-button 
     scope="public_profile,email,user_events,user_friends"
-    onlogin="checkLoginState();">
+    onlogin="checkLoginState();"
+    >
     Login
   </fb:login-button>
 
-  <div id="status"></div>
-
-
 
 <script>
-
-// function to fetch info FB.api('/me/', function(response){console.log(JSON.stringify(response))})
-
 
   function checkLoginState() {
   FB.getLoginStatus(function(response) {
@@ -26,7 +22,6 @@
     form.submit()
   });
 }
-
 
   window.fbAsyncInit = function() {
     FB.init({
@@ -47,4 +42,5 @@
      js.src = "https://connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
+
 </script>
