@@ -1,0 +1,47 @@
+$primary-color: #00FFE0;
+$text-color: #ACAFC0;
+$primary-bg: #232627;
+$accents: #FF00F8;
+
+* {
+  box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  background-color: $primary-bg
+}
+
+div {
+  .logo {
+    width: 40vw;
+    margin: 0 auto;
+  }
+  .logo--small{
+    
+  }
+
+  .main {
+    padding: 20vh 10vw;
+    text-align: center;
+  }
+}
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-family: Raleway-ExtraLight;
+  font-size: 32px;
+  color: $primary-color;
+  text-align: center;
+}
+
+p {
+  color: $text-color;
+  .small {
+    font-size: 12px;
+  }
+}

@@ -28,20 +28,19 @@ helpers do
 end
 
 
-# get '/search' do
-#   redirect '/login' unless logged_in?
-#   @radius = (params[:radius].to_f / 10000) / 2
-#   @events_found = Event.all.map { |event|
-#     place = event.place
-#     if !!place.latitude
-#         if (event.place.latitude.to_f - current_user.latitude.to_f)**2 + (event.place.longitude.to_f - current_user.longitude.to_f)**2 < @radius**2   
-#           puts event.name
-#         end
-#     end
-#   }
+get '/search' do
+  @events = Event.all
+  @user_latitude = current_user.latitude.to_f
+  @user_longitude = current_user.longitude.to_f
+  @radius = (current_user.radius.to_f / 100000) / 1.2
+  erb :search
+end
 
-#   erb :results
-# end
+post '/search' do
+  binding.pry
+  Database.add_user_rsvp(current_user, Event.find(params[:event_id], "attending"))
+  redirect '/search'
+end
 
 get '/' do
   if logged_in?

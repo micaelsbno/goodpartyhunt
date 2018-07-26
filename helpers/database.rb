@@ -70,11 +70,11 @@ class Database
       end
   end
 
-  def self.add_user_rsvp (info, event)
+  def self.add_user_rsvp (info, event, rsvp)
     user_rsvp = UserEvent.new
     user_rsvp.user_id = User.find_by(fb_id: info['id'].to_i).id
     user_rsvp.event_id = Event.find_by(fb_id: event['id'])['id'].to_i
-    user_rsvp.rsvp = event['rsvp_status']
+    user_rsvp.rsvp = rsvp
     user_rsvp.save
   end
 
@@ -99,7 +99,7 @@ class Database
       }
       new_event.save
       self.add_event_times(event)
-      self.add_user_rsvp(info, event)
+      self.add_user_rsvp(info, event, event['rsvp_status'])
     end
   end
 

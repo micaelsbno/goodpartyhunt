@@ -2,14 +2,12 @@
 
 <% end %>
 
-<form action="/"></form>
-<h2>logout</h2>
-<h1>My Events</h1>
+<h2>Event Search!</h2>
   
 <%
 
   @events = @events.map { |event|
-    if (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)**2 < @radius**2
+    if (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)**2 < @radius**2 && !event.users.map { |user| user.id }.include?(current_user.id) 
       event
     end
   }.compact
@@ -20,7 +18,14 @@
 %>
 
   <div class="events__item">
-    <div class="events__image" style="background: url('<%= event.image_url %>'); height: 200px; width: 400px;"></div>
+    <div class="events__image" style="background: url('<%= event.image_url %>'); height: 200px; width: 400px;">
+      <div class="events__image__button">
+        <form action="/search" method="post">
+          <input type="hidden" name="event_id" value="<%= event.id %>">
+          +
+        </form>
+      </div>
+    </div>
     <h3 class="events__title"><%= event.name %></h3>
     <% if !!event.description %>
       <p class="events__description"><%= event.description[0..200] %>...</p>

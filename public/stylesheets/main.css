@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  background-color: #232627;
+}
+
+div .logo {
+  width: 40vw;
+  margin: 0 auto;
+}
+div .main {
+  padding: 20vh 10vw;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-family: Raleway-ExtraLight;
+  font-size: 32px;
+  color: #00FFE0;
+  text-align: center;
+}
+
+p {
+  color: #ACAFC0;
+}
