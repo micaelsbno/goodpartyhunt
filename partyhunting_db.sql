@@ -67,13 +67,13 @@ CREATE TABLE event_categories (
   category_id INTEGER
 );
 
-CREATE TABLE users_friends (
+CREATE TABLE user_friends (
   id SERIAL4 PRIMARY KEY,
   user_id INTEGER,
   friend_id INTEGER
 );
 
-CREATE TABLE users_sessions (
+CREATE TABLE user_sessions (
   id SERIAL4 PRIMARY KEY,
   user_id INTEGER
 );
