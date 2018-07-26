@@ -27,7 +27,6 @@ helpers do
 
 end
 
-
 get '/search' do
   @events = Event.all
   @user_latitude = current_user.latitude.to_f
@@ -87,9 +86,20 @@ get '/login' do
   erb :login
 end
 
-post '/event/:event_id' do
-  Database.add_user_rsvp(current_user.fb_id, Event.find(params[:event_id]), "attending")
+post '/event/rsvp' do
+  Database.add_user_rsvp(current_user.fb_id, Event.find(params[:event_id].to_i).fb_id, params[:status])
   redirect '/search'
+end
+
+put '/event/rsvp' do
+  Database.add_user_rsvp(current_user.fb_id, Event.find(params[:event_id].to_i).fb_id, params[:status])
+  redirect '/search'
+end
+
+delete '/event/rsvp' do
+  user_rsvp = UserEvent.find_by(user_id: current_user.id, event_id: params[:event_id])
+  user_rsvp.destroy
+  redirect '/'
 end
 
 put '/start' do
@@ -100,4 +110,3 @@ put '/start' do
   user.save
   redirect '/'
 end
-

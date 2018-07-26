@@ -49,6 +49,7 @@ div .main {
   display: flex;
   padding: 0 10px;
   align-items: flex-end;
+  justify-content: space-between;
 }
 
 .events__description {
@@ -130,6 +131,10 @@ li {
   font-size: 12px;
 }
 
+.rsvp-form {
+  margin: 10px 0;
+}
+
 #radius {
   background-color: #232627;
   margin-left: 3px;
@@ -170,5 +175,10 @@ input::-webkit-inner-spin-button {
 }
 
 .fas {
+  color: #00FFE0;
+}
+
+.add-event {
+  margin: 15px 0;
   color: #00FFE0;
 }
