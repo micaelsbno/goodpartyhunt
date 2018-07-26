@@ -60,13 +60,6 @@ CREATE TABLE event_categories (
   category_id INTEGER
 );
 
-CREATE TABLE event_categories (
-  id SERIAL4 PRIMARY KEY,
-  event_id INTEGER,
-  user_id INTEGER,
-  category_id INTEGER
-);
-
 CREATE TABLE user_friends (
   id SERIAL4 PRIMARY KEY,
   user_id INTEGER,
