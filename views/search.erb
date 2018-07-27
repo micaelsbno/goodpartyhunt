@@ -3,66 +3,75 @@
     <a href="/"><img src="img/gph_logo.png" alt="" class="logo--small"></a>
   </div>
   <div class="title">
-    <h2>Event Search</h2>
+    <h2>Search</h2>
   </div>
   <div class="menu">
     <i class="fas fa-bars"></i>
   </div>
-</header>  
+  <div class="list-menu">
+    <ul class="list-menu">
+      <a href="/"><li class="list-item">Events</li></a>
+      <a href="/search"><li class="list-item">Search</li></a>
+      <li>
+        <form action="/session" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button class="logout"><li>Logout</li></button></li>
+      </form>
+    </ul>
+  </div>
+</header> 
 
 <form id="search-form">
-  Search radius:
+  <p style="display: inline;">Search radius:</p>
   <input type="number" min='100' max='20000' name="radius" id='radius'>
   <button id="search-location"><i class="fas fa-search"></i></button>
 </form>
+<main>
+  <%
 
-<%
+    @events = @events.map { |event|
+      if (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)**2 < @radius**2 && !event.users.map { |user| user.id }.include?(current_user.id)
+        event
+      end
+    }.compact
+    @events = @events.sort_by{ |event|
+      (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)**2
+    }
+    @events.each do |event|
+  %>
 
-  @events = @events.map { |event|
-    if (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)**2 < @radius**2 && !event.users.map { |user| user.id }.include?(current_user.id)
-      event
-    end
-  }.compact
-  @events = @events.sort_by{ |event|
-    (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)**2
-  }
-  @events.each do |event|
-%>
-
-<div class="events__item">
-  <div class="events__image" style="background-image: url('<%= event.image_url %>')">
-    <div class="events__image-container" style="justify-content: space-between;">
-      <h3 class="events__title"><%= event.name %></h3>
-        <form class="rsvp-form" action="/event/rsvp" method="post">
-          <% if current_user.events.include?(Event.find(event.id)) %>
-            <input type="hidden" name="_method" value="put">
-          <% end %>
-          <input type="hidden" name="event_id" value="<%= event.id %>">
-          <input type="hidden" name="status" value="attending">
-          <button id="search-start"><i class="far fa-check-circle fa-2x"></i></button>
-        </form>
+  <div class="events__item">
+    <div class="events__image" style="background-image: url('<%= event.image_url %>')">
+      <div class="events__image-container" style="justify-content: space-between;">
+        <h3 class="events__title"><%= event.name %></h3>
+          <form class="rsvp-form" action="/event/rsvp" method="post">
+            <% if current_user.events.include?(Event.find(event.id)) %>
+              <input type="hidden" name="_method" value="put">
+            <% end %>
+            <input type="hidden" name="event_id" value="<%= event.id %>">
+            <input type="hidden" name="status" value="attending">
+            <button id="search-start"><i class="far fa-check-circle fa-2x"></i></button>
+          </form>
+      </div>
+    </div>
+    <% if !!event.description %>
+      <p class="events__description"><%= event.description[0..200] %>...</p>
+    <% end %>
+    <div class="events__place">
+      <p class="events__place__item"><%= event.place.name %></p>
+      <p class="events__place__item">
+        <%= 
+          dist = (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)**2
+          distance = Math.sqrt(dist.abs) * 100000 
+          if distance < 1000
+            distance.to_f.to_i
+          else
+            distance.to_f.to_i
+          end
+        %>m
+      </p>
     </div>
   </div>
-  <% if !!event.description %>
-    <p class="events__description"><%= event.description[0..200] %>...</p>
+
   <% end %>
-  <div class="events__place">
-    <p class="events__place__item"><%= event.place.name %></p>
-    <p class="events__place__item">
-      <%= 
-        dist = (event.place.latitude.to_f - @user_latitude)**2 + (event.place.longitude.to_f - @user_longitude)
-        distance = (Math.sqrt(dist.abs) / 10000) ** 2
-        if distance < 1000
-          distance.to_i
-        else
-          distance.to_i
-        end
-      %>m
-    </p>
-  </div>
-</div>
-
-<% end %>
-
-
-
+</main>

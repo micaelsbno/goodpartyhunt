@@ -8,14 +8,26 @@
   <div class="menu">
     <i class="fas fa-bars"></i>
   </div>
+  <div class="list-menu">
+    <ul class="list-menu">
+      <a href="/"><li class="list-item">Events</li></a>
+      <a href="/search"><li class="list-item">Search</li></a>
+      <li>
+        <form action="/session" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button class="logout"><li>Logout</li></button></li>
+      </form>
+    </ul>
+  </div>
 </header>  
 
-<form id="search-form">
-  Search radius:
+<form id="search-form" action="/location" method="post">
+  <input type="hidden" name="_method" value="put">
+  <p style="display: inline;">Search radius:</p>
   <input type="number" min='100' max='20000' name="radius" id='radius'>
   <button id="search-location"><i class="fas fa-search"></i></button>
 </form>
-
+<main>
 <%
 
   @events = @events.map { |event|
@@ -61,8 +73,8 @@
       %>m</p>
   </div>
 </div>
-
 <% end %>
   
+</main>
 
 
