@@ -26,6 +26,8 @@
       
   };
 
+  fbAsyncInit();
+
   (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
      if (d.getElementById(id)) {return;}
@@ -54,11 +56,9 @@
   <h1>Connect now and never miss an event again</h1>
   <p class="small">(Not dodgy at all)</p>
 
-  <div id="login-button">
-    <fb:login-button 
-      scope="public_profile,email,user_events,user_friends"
-      onlogin="checkLoginState();">
-      Connect
-    </fb:login-button>
-  </div>
+  <fb:login-button 
+    scope="public_profile,email,user_events,user_friends"
+    onlogin="checkLoginState();">
+    Connect
+  </fb:login-button>
 </div>
