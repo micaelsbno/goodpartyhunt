@@ -136,6 +136,12 @@ li {
   color: #ACAFC0;
   font-family: Roboto-light;
   font-size: 12px;
+  align-items: center;
+}
+
+#search-form input {
+  height: 28px;
+  border-radius: 30px;
 }
 
 .rsvp-form {

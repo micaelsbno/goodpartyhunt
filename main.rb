@@ -76,7 +76,11 @@ put '/location' do
   user.longitude = params[:longitude].to_f
   user.radius = params[:radius]
   user.save
-  redirect '/search'
+  if params[:origin] == 'search'
+    redirect '/search'
+  else
+    redirect '/'
+  end
 end
 
 delete '/session' do

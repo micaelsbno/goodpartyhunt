@@ -6,6 +6,7 @@
       form.action = '/info'
       form.method = 'post'
       var input = document.createElement('input')
+      input.type = 'hidden'
       input.name = 'access_token'
       input.value = response.authResponse.accessToken
       form.appendChild(input)
