@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/reloader'
+# require 'sinatra/reloader'
 require 'pry'
 require 'httparty'
 require_relative 'db_config'
@@ -49,7 +49,7 @@ end
 post '/info' do
   @info = HTTParty.get("https://graph.facebook.com/v3.0/me?fields=id%2Cname%2Cfriends%2Cpicture%2Cemail%2Cevents&access_token=#{params[:access_token]}")
   @access_token = params[:access_token]
-    binding.pry
+    # binding.pry
 
   Database.add_user(@info)
   @info['events']['data'].each { |event|
