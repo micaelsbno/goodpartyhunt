@@ -1,44 +1,18 @@
-<style> 
-   .hidden {
-    display: none;
-  }
-  header {
-    display: none;
-  }
-</style>
-
-<div class="logo">
-  <img src="img/gph_logo.png" alt="">
-</div>
-
-<div class="main">
-  <h1>Connect now and never miss an event again</h1>
-  <p class="small">(Not dodgy at all)</p>
-
-  <div id="login-button">
-    <fb:login-button 
-      scope="public_profile,email,user_events,user_friends"
-      onlogin="checkLoginState();"
-      >
-      Connect
-    </fb:login-button>
-</div>
-
 <script>
 
   function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    var form = document.createElement('form')
-    form.action = '/info'
-    form.method = 'post'
-    var input = document.createElement('input')
-    input.name = 'access_token'
-    input.value = response.authResponse.accessToken
-    form.appendChild(input)
-    document.body.appendChild(form)
-    form.submit()
-  });
-}
+    FB.getLoginStatus(function(response) {
+      var form = document.createElement('form')
+      form.action = '/info'
+      form.method = 'post'
+      var input = document.createElement('input')
+      input.name = 'access_token'
+      input.value = response.authResponse.accessToken
+      form.appendChild(input)
+      document.body.appendChild(form)
+      form.submit()
+    });
+  }
 
   window.fbAsyncInit = function() {
     FB.init({
@@ -61,3 +35,30 @@
    }(document, 'script', 'facebook-jssdk'));
 
 </script>
+
+<style> 
+  .hidden {
+    display: none;
+  }
+
+  header {
+    display: none;
+  }
+</style>
+
+<div class="logo">
+  <img src="img/gph_logo.png" alt="">
+</div>
+
+<div class="main">
+  <h1>Connect now and never miss an event again</h1>
+  <p class="small">(Not dodgy at all)</p>
+
+  <div id="login-button">
+    <fb:login-button 
+      scope="public_profile,email,user_events,user_friends"
+      onlogin="checkLoginState();">
+      Connect
+    </fb:login-button>
+  </div>
+</div>
